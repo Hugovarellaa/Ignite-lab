@@ -42,7 +42,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1 {
+h1.title {
   font: 700 1.87rem "Poppins" sans-serif;
   color: var(--title-color);
   -webkit-font-smoothing: auto;
@@ -103,13 +103,8 @@ h1 {
   background: var(--body-color);
 }
 
-nav {
-  height: 4.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-
+main {
+  margin-top: 4.5rem;
 }
 
 .logo {
@@ -121,8 +116,30 @@ nav {
   color: var(--base-color);
 }
 
-main {
-  margin-top: 4.5rem;
+/* ---------- Navigation ---------- * */
+nav {
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+nav .menu {
+  opacity: 0;
+  visibility: hidden;
+}
+
+nav.show .menu {
+  opacity: 1;
+  visibility: visible;
+  background: var(--body-color);
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+
 }
 
 /* ---------- Home ---------- * */
