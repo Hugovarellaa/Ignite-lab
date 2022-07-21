@@ -1,4 +1,5 @@
 import { Header } from "./components/Header";
+import { List } from "./components/List";
 import { SearchBox } from "./components/SearchBox";
 import { Task } from "./components/Task";
 
@@ -10,6 +11,11 @@ export function App() {
       <Header />
       <SearchBox />
       <Task/>
+      <List />
+      <List />
+      <List />
+      <List />
+      <List />
     </div>
   );
 }

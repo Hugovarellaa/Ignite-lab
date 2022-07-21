@@ -14,12 +14,6 @@ export function Task () {
           </div>
         </div>
         <div />
-        <div>
-          <p>
-            Você ainda não tem tarefas cadastradas Crie tarefas e organize seus
-            itens a fazer
-          </p>
-        </div>
       </section>
   )
 }
