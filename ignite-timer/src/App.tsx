@@ -1,7 +1,14 @@
+import { ThemeProvider } from "styled-components";
+import { Button } from "./components/Button";
+import { defaultTheme } from "./styles/theme/default";
+
 export function App() {
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Button />
+      <Button />
+      <Button />
+      <Button />
+    </ThemeProvider>
   );
 }
