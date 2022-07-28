@@ -23,6 +23,10 @@ export const HeaderContainer = styled.header`
       &:hover {
         border-bottom: 3px solid ${({ theme }) => theme.colors['green-500']};
       }
+
+      &.active {
+        color: ${({ theme }) => theme.colors['green-500']};
+      }
     }
   }
 `
