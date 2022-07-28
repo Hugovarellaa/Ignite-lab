@@ -1,7 +1,5 @@
-import { ButtonContainer } from "./styles";
+import { ButtonContainer } from './styles'
 
-export function Button (){
-  return (
-    <ButtonContainer>click me</ButtonContainer>
-  )
+export function Button() {
+  return <ButtonContainer>click me</ButtonContainer>
 }
