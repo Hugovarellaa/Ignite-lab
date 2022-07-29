@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { zodResolver } from "@hookform/resolvers/zod";
+import { differenceInSeconds } from "date-fns";
 import { Play } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 
@@ -29,12 +30,22 @@ interface Cycle {
   id: string;
   task: string;
   minutesAmount: number;
+  startDate: Date;
 }
 
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
   const [amountSecondPassed, setAmountSecondPassed] = useState(0);
+
+  const activeCyle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  const totalSeconds = activeCyle ? activeCyle.minutesAmount * 60 : 0;
+  const currentSeconds = activeCyle ? totalSeconds - amountSecondPassed : 0;
+  const minutesAmount = Math.floor(currentSeconds / 60);
+  const secondsAmount = currentSeconds % 60;
+  const minutes = minutesAmount.toString().padStart(2, "0");
+  const second = secondsAmount.toString().padStart(2, "0");
 
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
@@ -54,6 +65,7 @@ export function Home() {
       id,
       task: data.task,
       minutesAmount: data.minutesAmount,
+      startDate: new Date(),
     };
 
     setCycles((oldState) => [...oldState, newCycle]);
@@ -61,15 +73,15 @@ export function Home() {
     reset();
   }
 
-  const activeCyle = cycles.find((cycle) => cycle.id === activeCycleId);
-
-  const totalSeconds = activeCyle ? activeCyle.minutesAmount * 60 : 0;
-  const currentSeconds = activeCyle ? totalSeconds - amountSecondPassed : 0;
-  const minutesAmount = Math.floor(currentSeconds / 60);
-  const secondsAmount = currentSeconds % 60;
-
-  const minutes = minutesAmount.toString().padStart(2, "0");
-  const second = secondsAmount.toString().padStart(2, "0");
+  useEffect(() => {
+    if (activeCyle) {
+      setInterval(() => {
+        setAmountSecondPassed(
+          differenceInSeconds(new Date(), activeCyle.startDate)
+        );
+      }, 1000);
+    }
+  }, [activeCyle]);
 
   return (
     <ContainerHome>
