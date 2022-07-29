@@ -68,7 +68,12 @@ export const StartCountDownButton = styled.button`
   background-color: ${({ theme }) => theme.colors['green-500']};
   color: ${({ theme }) => theme.colors['gray-100']};
 
-  &:hover {
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
     background-color: ${({ theme }) => theme.colors['green-700']};
   }
 `
