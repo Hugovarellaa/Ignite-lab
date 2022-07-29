@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Play } from "phosphor-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 
@@ -24,13 +25,22 @@ const newCycleFormValidationSchema = zod.object({
 
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
 
+interface Cycle {
+  id: string;
+  task: string;
+  minutesAmount: number;
+}
 
 export function Home() {
+  const [cycles, setCycles] = useState<Cycle[]>([]);
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
+  const [amountSecondPassed, setAmountSecondPassed] = useState(0);
+
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues: {
       task: "",
-      minutesAmount: 0 ,
+      minutesAmount: 0,
     },
   });
 
@@ -38,9 +48,28 @@ export function Home() {
   const isSubmitDisabled = !task;
 
   function handleCreateNewCycle(data: NewCycleFormData) {
-    reset()
-    console.log(data);
+    const id = String(new Date().getTime());
+
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      minutesAmount: data.minutesAmount,
+    };
+
+    setCycles((oldState) => [...oldState, newCycle]);
+    setActiveCycleId(id);
+    reset();
   }
+
+  const activeCyle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  const totalSeconds = activeCyle ? activeCyle.minutesAmount * 60 : 0;
+  const currentSeconds = activeCyle ? totalSeconds - amountSecondPassed : 0;
+  const minutesAmount = Math.floor(currentSeconds / 60);
+  const secondsAmount = currentSeconds % 60;
+
+  const minutes = minutesAmount.toString().padStart(2, "0");
+  const second = secondsAmount.toString().padStart(2, "0");
 
   return (
     <ContainerHome>
@@ -75,11 +104,11 @@ export function Home() {
         </FormContainer>
 
         <CountdownContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
           <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
+          <span>{second[0]}</span>
+          <span>{second[1]}</span>
         </CountdownContainer>
 
         <StartCountDownButton disabled={isSubmitDisabled} type="submit">
