@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Play } from 'phosphor-react'
+import { Play } from "phosphor-react";
+import { useForm } from "react-hook-form";
+
 import {
   ContainerHome,
   CountdownContainer,
@@ -8,18 +10,27 @@ import {
   Separator,
   StartCountDownButton,
   TaskInput
-} from './styles'
+} from "./styles";
 
 export function Home() {
+  const { register, handleSubmit, watch } = useForm();
+  const task = watch("task");
+  const isSubmitDisabled = !task;
+
+  function handleCreateNewCycle(data: any) {
+    console.log(data);
+  }
+
   return (
     <ContainerHome>
-      <form>
+      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <FormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
           <TaskInput
             id="task"
             list="task-suggestions"
             placeholder="De um nome para o seu projeto"
+            {...register("task")}
           />
           <datalist id="task-suggestions">
             <option value="Projeto 1" />
@@ -27,6 +38,7 @@ export function Home() {
             <option value="Projeto 3" />
             <option value="Banana" />
           </datalist>
+
           <label htmlFor="minutesAmount">durante</label>
           <MinutesAmountInput
             type="number"
@@ -35,6 +47,7 @@ export function Home() {
             step={0.5}
             min={1}
             max={60}
+            {...register("minutesAmount", { valueAsNumber: true })}
           />
 
           <span>minutos</span>
@@ -48,11 +61,11 @@ export function Home() {
           <span>0</span>
         </CountdownContainer>
 
-        <StartCountDownButton disabled type="submit">
+        <StartCountDownButton disabled={isSubmitDisabled} type="submit">
           <Play size={24} />
           começar
         </StartCountDownButton>
       </form>
     </ContainerHome>
-  )
+  );
 }
