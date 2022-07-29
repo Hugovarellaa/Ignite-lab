@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Play } from 'phosphor-react'
 import {
   ContainerHome,
@@ -5,7 +6,6 @@ import {
   FormContainer,
   MinutesAmountInput,
   Separator,
-  // eslint-disable-next-line prettier/prettier
   StartCountDownButton,
   TaskInput
 } from './styles'
