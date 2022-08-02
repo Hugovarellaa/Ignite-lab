@@ -3,7 +3,9 @@ import {
   CountdownContainer,
   FormContainer,
   HomeContainer,
-  Separator
+  // eslint-disable-next-line prettier/prettier
+  Separator,
+  StartCountdownButton
 } from './styles'
 
 export function Home() {
@@ -28,10 +30,10 @@ export function Home() {
           <span>0</span>
         </CountdownContainer>
 
-        <button type="submit">
+        <StartCountdownButton type="submit">
           <Play size={24} />
           <span>Começar</span>
-        </button>
+        </StartCountdownButton>
       </form>
     </HomeContainer>
   )
