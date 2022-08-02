@@ -1,4 +1,4 @@
-import { HistoryContainer, HistoryList } from './styles'
+import { HistoryContainer, HistoryList, Status } from './styles'
 
 export function History() {
   return (
@@ -21,7 +21,9 @@ export function History() {
               <td>20 minutos</td>
               <td>há cerca de 2 meses</td>
               <td>
-                <span>Concluído</span>
+                <span>
+                  <Status statusColor="green">Concluído</Status>
+                </span>
               </td>
             </tr>
 
@@ -30,7 +32,9 @@ export function History() {
               <td>20 minutos</td>
               <td>há cerca de 2 meses</td>
               <td>
-                <span>Concluído</span>
+                <span>
+                  <Status statusColor="yellow">Em andamento</Status>
+                </span>
               </td>
             </tr>
 
@@ -39,7 +43,9 @@ export function History() {
               <td>20 minutos</td>
               <td>há cerca de 2 meses</td>
               <td>
-                <span>Concluído</span>
+                <span>
+                  <Status statusColor="red">Interropido</Status>
+                </span>
               </td>
             </tr>
 
@@ -48,7 +54,9 @@ export function History() {
               <td>20 minutos</td>
               <td>há cerca de 2 meses</td>
               <td>
-                <span>Concluído</span>
+                <span>
+                  <Status statusColor="green">Concluído</Status>
+                </span>
               </td>
             </tr>
 
@@ -57,7 +65,9 @@ export function History() {
               <td>20 minutos</td>
               <td>há cerca de 2 meses</td>
               <td>
-                <span>Concluído</span>
+                <span>
+                  <Status statusColor="green">Concluído</Status>
+                </span>
               </td>
             </tr>
 
@@ -66,7 +76,39 @@ export function History() {
               <td>20 minutos</td>
               <td>há cerca de 2 meses</td>
               <td>
-                <span>Concluído</span>
+                <span>
+                  <Status statusColor="green">Concluído</Status>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Projeto 1</td>
+              <td>20 minutos</td>
+              <td>há cerca de 2 meses</td>
+              <td>
+                <span>
+                  <Status statusColor="green">Concluído</Status>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Projeto 1</td>
+              <td>20 minutos</td>
+              <td>há cerca de 2 meses</td>
+              <td>
+                <span>
+                  <Status statusColor="green">Concluído</Status>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Projeto 1</td>
+              <td>20 minutos</td>
+              <td>há cerca de 2 meses</td>
+              <td>
+                <span>
+                  <Status statusColor="green">Concluído</Status>
+                </span>
               </td>
             </tr>
           </tbody>
