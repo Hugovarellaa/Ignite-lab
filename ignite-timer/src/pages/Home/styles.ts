@@ -27,6 +27,39 @@ export const FormContainer = styled.div`
   flex-wrap: wrap;
 `
 
+export const BaseInput = styled.input`
+  background-color: transparent;
+  height: 2.5rem;
+  border: 0;
+  border-bottom: 1px solid ${({ theme }) => theme['gray-500']};
+  font-weight: bold;
+  font-size: 1.125rem;
+  padding: 0 0.5rem;
+  color: ${({ theme }) => theme['gray-100']};
+
+  &::placeholder {
+    color: ${({ theme }) => theme['gray-500']};
+  }
+
+  &:focus {
+    box-shadow: none;
+
+    border-color: ${({ theme }) => theme['green-500']};
+  }
+`
+
+export const TaskInput = styled(BaseInput)`
+  flex: 1;
+
+  &::-webkit-calendar-picker-indicator {
+    display: none !important;
+  }
+`
+
+export const MinutesAmountInput = styled(BaseInput)`
+  width: 4rem;
+`
+
 export const CountDouwnContainer = styled.div`
   font-family: 'Roboto mono', monospace;
   font-size: 10rem;
@@ -67,7 +100,7 @@ export const StartCountdownButton = styled.button`
   color: ${({ theme }) => theme['gray-100']};
   background-color: ${({ theme }) => theme['green-500']};
 
-  &:hover {
-    background-color: ${({ theme }) => theme['red-700']};
+  &:not(:disabled):hover {
+    background-color: ${({ theme }) => theme['green-700']};
   }
 `
