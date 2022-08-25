@@ -1,4 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Play } from 'phosphor-react'
+import { useForm } from 'react-hook-form'
+import * as zod from 'zod'
+
 import {
   CountDouwnContainer,
   FormContainer,
@@ -10,10 +14,47 @@ import {
   TaskInput
 } from './styles'
 
+// interface NewCycleFormData {
+//   task: string
+//   minutesAmountDuration: number
+// }
+
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a Tarefa'),
+  minutesAmountDuration: zod
+    .number()
+    .min(1)
+    .max(
+      99,
+      'O circlo precisa ser de no mínimo 1 minuto e no máximo 99 minutos',
+    ),
+})
+
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
+
 export function Home() {
+  const { register, handleSubmit, watch, reset } = useForm({
+    resolver: zodResolver(newCycleFormValidationSchema),
+    defaultValues: {
+      task: '',
+      minutesAmountDuration: 0,
+    },
+  })
+
+  const task = watch('task')
+  const isSubmitDisabled = !task
+
+  function handleCreateNewCycle({
+    task,
+    minutesAmountDuration,
+  }: NewCycleFormData) {
+    console.log(task, minutesAmountDuration)
+    reset()
+  }
+
   return (
     <HomeContainer>
-      <form>
+      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <FormContainer>
           <label htmlFor="task">Vou trabalhar em </label>
           <TaskInput
@@ -21,6 +62,7 @@ export function Home() {
             id="task"
             placeholder="Dê um nome para o seu projeto"
             list="task-suggestions"
+            {...register('task')}
           />
 
           <datalist id="task-suggestions">
@@ -36,6 +78,9 @@ export function Home() {
             step={1}
             max={99}
             min={1}
+            {...register('minutesAmountDuration', {
+              valueAsNumber: true,
+            })}
           />
           <span>minutos.</span>
         </FormContainer>
@@ -48,7 +93,7 @@ export function Home() {
           <span>0</span>
         </CountDouwnContainer>
 
-        <StartCountdownButton disabled type="submit">
+        <StartCountdownButton disabled={isSubmitDisabled} type="submit">
           <Play size={24} />
           Começar
         </StartCountdownButton>
