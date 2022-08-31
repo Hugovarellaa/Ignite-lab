@@ -1,7 +1,12 @@
+import { Route, Routes } from 'react-router-dom'
+import { History } from './pages/History'
+import { Home } from './pages/Home'
+
 export function Router() {
   return (
-    <div>
-      <h1>Router</h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/history" element={<History />} />
+    </Routes>
   )
 }
