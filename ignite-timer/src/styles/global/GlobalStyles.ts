@@ -7,6 +7,11 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  :focus {
+    outline: none;
+    box-shadow: none;
+  }
+
   body {
     background-color: ${({ theme }) => theme['gray-900']};
     color: ${({ theme }) => theme['gray-300']};
@@ -17,6 +22,10 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 400;
     font-size: 1rem;
     -webkit-font-smoothing: antialiased;
+  }
+
+  button {
+    cursor: pointer;
   }
 
   a {
