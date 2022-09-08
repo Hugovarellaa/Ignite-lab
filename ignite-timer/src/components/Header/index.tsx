@@ -1,7 +1,14 @@
+import logoImg from '../../assets/logo.svg'
+import { HeaderContainer } from './styles'
+
 export function Header() {
   return (
-    <div>
-      <h1>Header</h1>
-    </div>
+    <HeaderContainer>
+      <img src={logoImg} alt="" />
+      <nav>
+        <a href="#">Timer</a>
+        <a href="#">History</a>
+      </nav>
+    </HeaderContainer>
   )
 }
