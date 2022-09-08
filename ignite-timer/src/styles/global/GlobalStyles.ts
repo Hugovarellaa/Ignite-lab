@@ -8,12 +8,12 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: black;
-    color: white;
+    background-color: ${({ theme }) => theme["gray-900"]};
+    color: ${({ theme }) => theme["gray-300"]}
   }
 
   body, input, button, select, textarea {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Roboto", sans-serif;
     font-size: 1rem;
     font-weight: 400;
   }
