@@ -7,6 +7,11 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  :focus {
+    outline: none;
+    box-shadow: none;
+  }
+
   body {
     background-color: ${({ theme }) => theme['gray-900']};
     color: ${({ theme }) => theme['gray-300']}
@@ -16,6 +21,7 @@ export const GlobalStyles = createGlobalStyle`
     font-family: "Roboto", sans-serif;
     font-size: 1rem;
     font-weight: 400;
+    -webkit-font-smoothing: antialiased;
   }
 
   a {
