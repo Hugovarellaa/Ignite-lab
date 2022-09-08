@@ -1,5 +1,8 @@
 /* eslint-disable prettier/prettier */
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Play } from 'phosphor-react'
+import { useForm } from "react-hook-form"
+import * as zod from "zod"
 import {
   CountdownContainer,
   FormContainer, HomeContainer,
@@ -9,10 +12,36 @@ import {
   TaskInput
 } from './styles'
 
+const cycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod.number().min(1, 'O ciclo precisa ser de no mínimo 1 minuto').max(99, "O ciclo precisa ser de no máximo 60 minuto"),
+})
+
+type NewCycleForm = zod.infer<typeof cycleFormValidationSchema>
+
 export function Home() {
+
+  const formControll = useForm<NewCycleForm>({
+    resolver: zodResolver(cycleFormValidationSchema),
+    defaultValues: {
+      task: "",
+      minutesAmount: 0
+    }
+  })
+  const { register, handleSubmit, watch } = formControll
+
+  const task = watch("task")
+  const isDisabledForm = !task
+
+  function handleCreateNewCycle(data: NewCycleForm) {
+
+
+  }
+
+
   return (
     <HomeContainer>
-      <form>
+      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <FormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
           <TaskInput
@@ -20,6 +49,7 @@ export function Home() {
             id="task"
             list="datalist-suggestion"
             placeholder="Dê um nome para o seu projeto"
+            {...register("task")}
           />
 
           <datalist id='datalist-suggestion'>
@@ -36,9 +66,12 @@ export function Home() {
             type="number"
             id="minutesAmount"
             placeholder="00"
-            step={5}
-            min={5}
-            max={99}
+            min={1}
+            max={60}
+            {...register("minutesAmount", {
+              valueAsNumber: true
+            })}
+
           />
           <span>minutos</span>
         </FormContainer>
@@ -51,7 +84,7 @@ export function Home() {
           <span>0</span>
         </CountdownContainer>
 
-        <StarCountdownButton type="submit">
+        <StarCountdownButton type="submit" disabled={isDisabledForm}>
           <Play size={24} />
           Começar
         </StarCountdownButton>
