@@ -57,6 +57,7 @@ export function Home() {
     }
     setCycles(oldState => [...oldState, newCycle])
     setActiveCycleId(id)
+    setAmountSecondsPassed(0)
     reset()
   }
 
