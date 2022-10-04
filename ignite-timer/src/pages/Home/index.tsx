@@ -7,6 +7,8 @@ import {
 } from './styles'
 
 export function Home() {
+
+  
   return (
     <HomeContainer>
       <form>
@@ -16,13 +18,24 @@ export function Home() {
             type="text"
             id="task"
             placeholder="Dê um nome para o seu projeto"
+            list="task-suggest"
           />
+
+          <datalist id="task-suggest">
+            <option value="Projeto 1" />
+            <option value="Projeto 2" />
+            <option value="Projeto 3" />
+            <option value="Projeto 4" />
+            <option value="Banana" />
+          </datalist>
 
           <label htmlFor="minutesAmount">durante</label>
           <InputMinutesAmount
             type="number"
             id="minutesAmount"
             placeholder="00"
+            min={1}
+            max={99}
           />
           <span>minutos.</span>
         </FormContainer>
