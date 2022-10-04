@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable prettier/prettier */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { differenceInSeconds } from "date-fns";
@@ -66,12 +67,18 @@ export function Home() {
   const seconds = String(secondsAmount).padStart(2, '0')
 
   useEffect(() => {
+    let interval: NodeJS.Timer 
+     
     if (activeCycle) {
-      setInterval(() => {
+      interval = setInterval(() => {
         setAmountSecondsPassed(
           differenceInSeconds(new Date(), activeCycle.startDate) 
         )
       }, 1000)
+    }
+
+    return () => {
+      clearInterval(interval)
     }
   }, [activeCycle])
 
