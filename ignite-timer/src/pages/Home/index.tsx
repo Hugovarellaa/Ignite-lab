@@ -1,13 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Play } from 'phosphor-react';
+import { useState } from "react";
 import { useForm } from 'react-hook-form';
 import * as zod from "zod";
-import {
-  CountdownContainer,
-  FormContainer,
-  HomeContainer, InputMinutesAmount, InputTask, Separator, StartCountDownButton
-} from './styles';
+import * as styles from './styles';
 
 
 const newCycleFormValidationSchema = zod.object({
@@ -18,10 +15,19 @@ const newCycleFormValidationSchema = zod.object({
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
 
-export function Home() {
-  // const [task, settask] = useState('')
+interface Cycle {
+  id: string;
+  task: string;
+  minutesAmount: number;
+}
 
-  const { register,  reset, watch, handleSubmit } = useForm<NewCycleFormData>({
+
+export function Home() {
+  const [cycles, setCycles] = useState<Cycle[]>([])
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [amountSecondPassed, setAmountSecondsPassed] = useState(0)
+
+  const { register, reset, watch, handleSubmit } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues: {
       task: '',
@@ -33,16 +39,35 @@ export function Home() {
   const isDisabledSubmit = !task
 
   function handleCreateNewCycle(data: NewCycleFormData) {
-    console.log(data)
+    const id = String(new Date().getTime())
+
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      minutesAmount: data.minutesAmount
+    }
+
+    setCycles(oldCycle => [...oldCycle , newCycle])
+    setActiveCycleId(id)
     reset()
   }
+  
+  const activeCycle = cycles.find( cycle => cycle.id === activeCycleId)
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+
+  const currendSeconds = activeCycle ? totalSeconds - amountSecondPassed : 0 
+  const minutesAmount = Math.floor(currendSeconds / 60)
+  const secondsAmount = currendSeconds % 60
+
+  const minutes = String(minutesAmount).padStart(2, '0')
+  const seconds = String(secondsAmount).padStart(2, '0')
 
   return (
-    <HomeContainer>
+    <styles.HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewCycle)}>
-        <FormContainer>
+        <styles.FormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
-          <InputTask
+          <styles.InputTask
             type="text"
             id="task"
             placeholder="Dê um nome para o seu projeto"
@@ -59,7 +84,7 @@ export function Home() {
           </datalist>
 
           <label htmlFor="minutesAmount">durante</label>
-          <InputMinutesAmount
+          <styles.InputMinutesAmount
             type="number"
             id="minutesAmount"
             {...register('minutesAmount', { valueAsNumber: true })}
@@ -68,22 +93,22 @@ export function Home() {
             max={99}
           />
           <span>minutos.</span>
-        </FormContainer>
+        </styles.FormContainer>
 
-        <CountdownContainer>
-          <span>0</span>
-          <span>0</span>
-          <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
-        </CountdownContainer>
+        <styles.CountdownContainer>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
+          <styles.Separator>:</styles.Separator>
+          <span>{seconds[0]}</span>
+          <span>{seconds[1]}</span>
+        </styles.CountdownContainer>
 
-        <StartCountDownButton type="submit" disabled={isDisabledSubmit}>
+        <styles.StartCountDownButton type="submit" disabled={isDisabledSubmit}>
           <Play size={24} />
           Começar
-        </StartCountDownButton>
+        </styles.StartCountDownButton>
       </form>
-    </HomeContainer>
+    </styles.HomeContainer>
   )
 }
 
