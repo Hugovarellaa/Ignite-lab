@@ -13,6 +13,12 @@ export const GlobalStyle = createGlobalStyle`
     box-shadow: none;
   }
 
+  html, body {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  }
+
   body {
     background-color: ${({ theme }) => theme['gray-900']} ;
     color: ${({ theme }) => theme['gray-100']};
