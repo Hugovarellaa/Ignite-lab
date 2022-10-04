@@ -9,7 +9,7 @@ export const DefaultLayoutContainer = styled.div`
   background: ${({ theme }) => theme['gray-800']};
   border-radius: 8px;
 
-  overflow: auto;
+  overflow: hidden;
 
   display: flex;
   flex-direction: column;
