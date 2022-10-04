@@ -1,17 +1,45 @@
 /* eslint-disable prettier/prettier */
-import { Play } from 'phosphor-react'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Play } from 'phosphor-react';
+import { useForm } from 'react-hook-form';
+import * as zod from "zod";
 import {
   CountdownContainer,
   FormContainer,
   HomeContainer, InputMinutesAmount, InputTask, Separator, StartCountDownButton
-} from './styles'
+} from './styles';
+
+
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod.number().min(1, 'O tempo mínimo é de 1 minuto').max(99, "O tempo máximo é 99 minutos"),
+})
+
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
+
 
 export function Home() {
+  // const [task, settask] = useState('')
 
-  
+  const { register,  reset, watch, handleSubmit } = useForm<NewCycleFormData>({
+    resolver: zodResolver(newCycleFormValidationSchema),
+    defaultValues: {
+      task: '',
+      minutesAmount: 0
+    }
+  })
+
+  const task = watch('task')
+  const isDisabledSubmit = !task
+
+  function handleCreateNewCycle(data: NewCycleFormData) {
+    console.log(data)
+    reset()
+  }
+
   return (
     <HomeContainer>
-      <form>
+      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <FormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
           <InputTask
@@ -19,6 +47,7 @@ export function Home() {
             id="task"
             placeholder="Dê um nome para o seu projeto"
             list="task-suggest"
+            {...register('task')}
           />
 
           <datalist id="task-suggest">
@@ -33,6 +62,7 @@ export function Home() {
           <InputMinutesAmount
             type="number"
             id="minutesAmount"
+            {...register('minutesAmount', { valueAsNumber: true })}
             placeholder="00"
             min={1}
             max={99}
@@ -48,7 +78,7 @@ export function Home() {
           <span>0</span>
         </CountdownContainer>
 
-        <StartCountDownButton type="submit">
+        <StartCountDownButton type="submit" disabled={isDisabledSubmit}>
           <Play size={24} />
           Começar
         </StartCountDownButton>
@@ -56,3 +86,4 @@ export function Home() {
     </HomeContainer>
   )
 }
+
