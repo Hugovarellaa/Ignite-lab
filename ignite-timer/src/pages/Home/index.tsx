@@ -100,7 +100,6 @@ export function Home() {
             clearInterval(interval)
         } else {
           setAmountSecondsPassed(secondsDiference)
-
         }
 
       }, 1000)
@@ -109,7 +108,7 @@ export function Home() {
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle])
+  }, [activeCycle, activeCycleId, totalSeconds])
 
   useEffect(() => {
     if (activeCycle) {
