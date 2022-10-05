@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { differenceInSeconds } from "date-fns";
-import { Play } from 'phosphor-react';
+import { HandPalm, Play } from 'phosphor-react';
 import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 import * as zod from "zod";
@@ -68,12 +68,12 @@ export function Home() {
   const seconds = String(secondsAmount).padStart(2, '0')
 
   useEffect(() => {
-    let interval: NodeJS.Timer 
-     
+    let interval: NodeJS.Timer
+
     if (activeCycle) {
       interval = setInterval(() => {
         setAmountSecondsPassed(
-          differenceInSeconds(new Date(), activeCycle.startDate) 
+          differenceInSeconds(new Date(), activeCycle.startDate)
         )
       }, 1000)
     }
@@ -82,6 +82,12 @@ export function Home() {
       clearInterval(interval)
     }
   }, [activeCycle])
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes} : ${seconds}`
+    }
+  }, [activeCycle, minutes, seconds])
 
   return (
     <styles.HomeContainer>
@@ -124,10 +130,19 @@ export function Home() {
           <span>{seconds[1]}</span>
         </styles.CountdownContainer>
 
-        <styles.StartCountDownButton type="submit" disabled={isDisabledSubmit}>
-          <Play size={24} />
-          Começar
-        </styles.StartCountDownButton>
+        {
+          activeCycle ? (
+            <styles.StopCountDownButton type="button">
+              <HandPalm size={24} />
+              Começar
+            </styles.StopCountDownButton>
+          ) : (
+            <styles.StartCountDownButton type="submit" disabled={isDisabledSubmit}>
+              <Play size={24} />
+              Começar
+            </styles.StartCountDownButton>
+          )
+        }
       </form>
     </styles.HomeContainer>
   )
