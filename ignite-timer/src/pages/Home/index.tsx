@@ -97,6 +97,7 @@ export function Home() {
           <styles.InputTask
             type="text"
             id="task"
+            disabled={!!activeCycle}
             placeholder="Dê um nome para o seu projeto"
             list="task-suggest"
             {...register('task')}
@@ -114,6 +115,7 @@ export function Home() {
           <styles.InputMinutesAmount
             type="number"
             id="minutesAmount"
+            disabled={!!activeCycle}
             {...register('minutesAmount', { valueAsNumber: true })}
             placeholder="00"
             min={1}
@@ -132,7 +134,7 @@ export function Home() {
 
         {
           activeCycle ? (
-            <styles.StopCountDownButton type="button">
+            <styles.StopCountDownButton type="button" onClick={() => { }}>
               <HandPalm size={24} />
               Começar
             </styles.StopCountDownButton>
