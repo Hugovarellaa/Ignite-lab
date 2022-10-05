@@ -58,8 +58,9 @@ export function Home() {
     reset()
   }
 
-  function handleInterruptCycle() { 
-    setCycles(cycles.map(cycle => {
+  function handleInterruptCycle() {
+    setCycles(oldCycle => 
+      oldCycle.map(cycle => {
       if (cycle.id === activeCycleId) {
         return { ...cycle, interruptedDate: new Date() }
       } else {
@@ -69,7 +70,6 @@ export function Home() {
     setActiveCycleId(null)
   }
 
-  console.log(cycles)
 
   const activeCycle = cycles.find(cycle => cycle.id === activeCycleId)
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
@@ -86,9 +86,23 @@ export function Home() {
 
     if (activeCycle) {
       interval = setInterval(() => {
-        setAmountSecondsPassed(
-          differenceInSeconds(new Date(), activeCycle.startDate)
-        )
+        const secondsDiference = differenceInSeconds(new Date(), activeCycle.startDate)
+        if (secondsDiference >= totalSeconds) {
+          setCycles(oldCycle =>
+            oldCycle.map(cycle => {
+              if (cycle.id === activeCycleId) {
+                return { ...cycle, interruptedDate: new Date() }
+              } else {
+                return cycle
+              }
+            }))
+            setAmountSecondsPassed(totalSeconds)
+            clearInterval(interval)
+        } else {
+          setAmountSecondsPassed(secondsDiference)
+
+        }
+
       }, 1000)
     }
 
