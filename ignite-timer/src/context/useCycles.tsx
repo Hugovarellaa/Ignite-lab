@@ -53,6 +53,15 @@ export function CyclesContextProvider({ children }: CycleProviderProps) {
       if (storageStateAsJSON) {
         return JSON.parse(storageStateAsJSON)
       }
+
+      
+      // Corrigindo bug de deploy
+      // Acontece pois se a função de initializer não retornar nada, o valor vai ficar como undefined e vai gerar esse bug
+      // iniciando o estado com o valor inicial para evitar o problema
+      return {
+        cycles: [],
+        activeCycleId: null,
+      }
     }
   )
 
@@ -63,7 +72,7 @@ export function CyclesContextProvider({ children }: CycleProviderProps) {
 
   const [amountSecondPassed, setAmountSecondsPassed] = useState(() => {
     if (activeCycle) {
-      return  differenceInSeconds(
+      return differenceInSeconds(
         new Date(),
         new Date(activeCycle.startDate),
       )
