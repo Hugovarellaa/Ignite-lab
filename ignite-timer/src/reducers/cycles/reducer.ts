@@ -9,7 +9,7 @@ interface CycleState {
 
 export function cyclesReducer(state: CycleState, action: any) {
   switch (action.type) {
-    case ActionTypes.ADD_NEW_CYCLE:
+    case ActionTypes.ADD_NEW_CYCLE: {
       // Estrutura sem biblioteca immer com uso da imutablidade
       // return {
       //   ...state,
@@ -22,6 +22,7 @@ export function cyclesReducer(state: CycleState, action: any) {
         draft.cycles.push(action.payload.newCycle)
         draft.activeCycleId = action.payload.newCycle.id
       })
+    }
     case ActionTypes.INTERRUPT_CURRENT_CYCLE: {
       // Estrutura sem biblioteca immer com uso da imutablidade
       // return {
@@ -65,7 +66,6 @@ export function cyclesReducer(state: CycleState, action: any) {
       // }
 
       // Estrutura com biblioteca immer com uso da imutablidade
-
       const currentCycleIndex = state.cycles.findIndex((cycle) => {
         return cycle.id === state.activeCycleId
       })

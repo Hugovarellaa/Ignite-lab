@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
+import { differenceInSeconds } from 'date-fns'
 import {
   createContext,
   ReactNode,
   useContext,
+  useEffect,
   useReducer,
   useState
 } from 'react'
@@ -46,13 +48,29 @@ export function CyclesContextProvider({ children }: CycleProviderProps) {
       cycles: [],
       activeCycleId: null,
     },
+    () => {
+      const storageStateAsJSON = localStorage.getItem('@ignite-timer:cycles-state-1.0.0')
+      if (storageStateAsJSON) {
+        return JSON.parse(storageStateAsJSON)
+      }
+    }
   )
 
-  const [amountSecondPassed, setAmountSecondsPassed] = useState(0)
 
   const { activeCycleId, cycles } = cyclesState
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  const [amountSecondPassed, setAmountSecondsPassed] = useState(() => {
+    if (activeCycle) {
+      return  differenceInSeconds(
+        new Date(),
+        new Date(activeCycle.startDate),
+      )
+    }
+    return 0
+  })
+
 
   function createNewCycle(data: CreateCycleData) {
     const id = String(new Date().getTime())
@@ -79,6 +97,13 @@ export function CyclesContextProvider({ children }: CycleProviderProps) {
   function amountSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds)
   }
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(cyclesState)
+    localStorage.setItem('@ignite-timer:cycles-state-1.0.0', stateJSON)
+  }, [cyclesState])
+
+
 
   return (
     <CyclesContext.Provider
