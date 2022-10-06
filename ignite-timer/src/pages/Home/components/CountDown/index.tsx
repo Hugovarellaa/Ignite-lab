@@ -7,7 +7,6 @@ import { CountdownContainer, Separator } from './style'
 export function CountDown() {
   const {
     activeCycle,
-    activeCycleId,
     markCurrentCycleAsFinished,
     amountSecondPassed,
     amountSecondsPassed,
@@ -46,7 +45,6 @@ export function CountDown() {
     }
   }, [
     activeCycle,
-    activeCycleId,
     amountSecondsPassed,
     markCurrentCycleAsFinished,
     totalSeconds,

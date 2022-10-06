@@ -17,7 +17,6 @@ const newCycleFormValidationSchema = zod.object({
 
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
-
 interface Cycle {
   id: string;
   task: string;
@@ -36,8 +35,6 @@ interface CyclesContextData {
 
 export const CyclesContext = createContext({} as CyclesContextData)
 
-
-
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
@@ -52,7 +49,6 @@ export function Home() {
   })
 
   const {  reset, watch, handleSubmit } = newCycleForm
-
 
   const task = watch('task')
   const isDisabledSubmit = !task
@@ -101,10 +97,7 @@ export function Home() {
     setAmountSecondsPassed(seconds)
   }
 
-
   const activeCycle = cycles.find(cycle => cycle.id === activeCycleId)
-
-
 
   return (
     <styles.HomeContainer>
