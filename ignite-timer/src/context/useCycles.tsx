@@ -6,7 +6,8 @@ import {
   useReducer,
   useState
 } from 'react'
-import { ActionTypes, cyclesReducer } from '../reducers/cycles'
+import { addNewCycleActionAction, interruptNewCycleAction, markCurrentCycleAsFinishedAction } from '../reducers/cycles/actions'
+import { cyclesReducer } from '../reducers/cycles/reducer'
 
 export interface Cycle {
   id: string
@@ -63,31 +64,16 @@ export function CyclesContextProvider({ children }: CycleProviderProps) {
       startDate: new Date(),
     }
 
-    dispatch({
-      type: ActionTypes.ADD_NEW_CYCLE,
-      payload: {
-        newCycle,
-      },
-    })
+    dispatch(addNewCycleActionAction(newCycle))
     setAmountSecondsPassed(0)
   }
 
   function interruptCurrentCycle() {
-    dispatch({
-      type: ActionTypes.INTERRUPT_CURRENT_CYCLE,
-      payload: {
-        activeCycleId,
-      },
-    })
+    dispatch(interruptNewCycleAction())
   }
 
   function markCurrentCycleAsFinished() {
-    dispatch({
-      type: ActionTypes.MARKK_CURRENT_CYCLE_AS_FINISHED,
-      payload: {
-        activeCycleId,
-      },
-    })
+    dispatch(markCurrentCycleAsFinishedAction())
   }
 
   function amountSecondsPassed(seconds: number) {
