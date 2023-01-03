@@ -1,7 +1,10 @@
+import { ThemeProvider } from "styled-components";
+import { defaultTheme } from "./styles/theme";
+
 export function App() {
   return (
-    <div>
+    <ThemeProvider theme={defaultTheme}>
       <h1>First render</h1>
-    </div>
+    </ThemeProvider>
   );
 }
