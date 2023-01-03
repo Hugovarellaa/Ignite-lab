@@ -3,8 +3,10 @@ import {
   HomeContainer,
   HomeCountDownContainer,
   HomeFormContainer,
+  HomeMinutesAmountInput,
   HomeSeparator,
   HomeStartCountDownButton,
+  HomeTaskInput,
 } from './styles'
 
 export default function Home() {
@@ -13,10 +15,30 @@ export default function Home() {
       <form>
         <HomeFormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
-          <input type="text" id="task" />
+          <HomeTaskInput
+            type="text"
+            id="task"
+            list="task-suggestion"
+            placeholder="Dê um nome para o seu projeto"
+          />
+
+          <datalist id="task-suggestion">
+            <option value="Projeto 1" />
+            <option value="Projeto 2" />
+            <option value="Projeto 3" />
+            <option value="Projeto 4" />
+            <option value="Banana" />
+          </datalist>
 
           <label htmlFor="minutesAmount">durante</label>
-          <input type="number" id="minutesAmount" />
+          <HomeMinutesAmountInput
+            type="number"
+            id="minutesAmount"
+            placeholder="00"
+            step={5}
+            min={5}
+            max={60}
+          />
           <span>minutos.</span>
         </HomeFormContainer>
 
