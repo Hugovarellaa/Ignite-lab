@@ -1,6 +1,10 @@
+import { formatDistanceToNow } from 'date-fns'
+import ptBR from 'date-fns/esm/locale/pt-BR/index.js'
+import { useCycle } from '../../context/useCycle'
 import { HistoryContainer, HistoryList, HistoryStatus } from './styles'
 
 export function History() {
+  const { cycles } = useCycle()
   return (
     <HistoryContainer>
       <h1>Meu histórico</h1>
@@ -16,118 +20,35 @@ export function History() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="green">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="green">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="yellow">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="red">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="red">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="green">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="green">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="red">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="red">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="green">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="yellow">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="red">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="red">Concluído</HistoryStatus>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa 1</td>
-              <td>20 minutos</td>
-              <td>Há 2 meses</td>
-              <td>
-                <HistoryStatus status_color="green">Concluído</HistoryStatus>
-              </td>
-            </tr>
+            {cycles.map((cycle) => (
+              <tr key={cycle.id}>
+                <td>{cycle.task}</td>
+                <td>{`${cycle.minutesAmount} minutos`}</td>
+                <td>
+                  {formatDistanceToNow(cycle.startDate, {
+                    addSuffix: true,
+                    locale: ptBR,
+                  })}
+                </td>
+                <td>
+                  {cycle.finishDate && (
+                    <HistoryStatus status_color="green">
+                      Concluído
+                    </HistoryStatus>
+                  )}
+                  {cycle.interruptDate && (
+                    <HistoryStatus status_color="red">
+                      Interrompido
+                    </HistoryStatus>
+                  )}
+                  {!cycle.finishDate && !cycle.interruptDate && (
+                    <HistoryStatus status_color="yellow">
+                      Em andamento
+                    </HistoryStatus>
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </HistoryList>

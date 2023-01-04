@@ -14,78 +14,8 @@ export const HomeContainer = styled.main`
     gap: 3.5rem;
   }
 `
-export const HomeFormContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
 
-  color: ${({ theme }) => theme['gray-100']};
-  font-size: 1.125rem;
-  font-weight: bold;
-  flex-wrap: wrap;
-`
-
-const BaseInput = styled.input`
-  background-color: transparent;
-  height: 2.5rem;
-  border: 0;
-  border-bottom: 2px solid ${({ theme }) => theme['gray-500']};
-  font-weight: bold;
-  font-size: 1.125rem;
-  padding: 0 0.5rem;
-  color: ${({ theme }) => theme['gray-100']};
-
-  &::placeholder {
-    color: ${({ theme }) => theme['gray-500']};
-  }
-
-  &:focus {
-    box-shadow: none;
-    border-color: ${({ theme }) => theme['green-500']};
-  }
-`
-
-export const HomeTaskInput = styled(BaseInput)`
-  flex: 1;
-
-  /* remove arrow scroll */
-  &::-webkit-calendar-picker-indicator {
-    display: none !important;
-  }
-`
-
-export const HomeMinutesAmountInput = styled(BaseInput)`
-  width: 4rem;
-`
-
-export const HomeCountDownContainer = styled.div`
-  font-family: 'Roboto Mono', monospace;
-  font-size: 10rem;
-  line-height: 8rem;
-  color: ${({ theme }) => theme['gray-100']};
-
-  display: flex;
-  gap: 1rem;
-
-  span {
-    background-color: ${({ theme }) => theme['gray-700']};
-    padding: 2rem 1rem;
-    border-radius: 8px;
-  }
-`
-export const HomeSeparator = styled.div`
-  padding: 2rem 0;
-  width: 4rem;
-  overflow: hidden;
-
-  display: flex;
-  justify-content: center;
-
-  color: ${({ theme }) => theme['green-500']};
-`
-export const HomeStartCountDownButton = styled.button`
+const HomeButtonBase = styled.button`
   width: 100%;
   border: 0;
   padding: 1rem;
@@ -97,11 +27,21 @@ export const HomeStartCountDownButton = styled.button`
   gap: 0.5rem;
 
   font-weight: bold;
-
-  background-color: ${({ theme }) => theme['green-500']};
   color: ${({ theme }) => theme['gray-100']};
+`
+
+export const HomeStartCountDownButton = styled(HomeButtonBase)`
+  background-color: ${({ theme }) => theme['green-500']};
 
   &:not(:disabled):hover {
     background-color: ${({ theme }) => theme['green-700']};
+  }
+`
+
+export const HomeStoptCountDownButton = styled(HomeButtonBase)`
+  background-color: ${({ theme }) => theme['red-500']};
+
+  &:not(:disabled):hover {
+    background-color: ${({ theme }) => theme['red-700']};
   }
 `
