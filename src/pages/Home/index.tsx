@@ -12,7 +12,7 @@ import {
   HomeMinutesAmountInput,
   HomeSeparator,
   HomeStartCountDownButton,
-  HomeTaskInput,
+  HomeTaskInput
 } from './styles'
 
 const newCycleFormSchema = zod.object({
@@ -88,6 +88,12 @@ export default function Home() {
       clearInterval(interval)
     }
   }, [activeCycle])
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes}: ${seconds}`
+    }
+  }, [activeCycle, minutes, seconds])
 
   return (
     <HomeContainer>
