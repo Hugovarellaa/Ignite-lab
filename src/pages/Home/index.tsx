@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Play } from 'phosphor-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
@@ -23,7 +24,17 @@ const newCycleFormSchema = zod.object({
 
 type formData = zod.infer<typeof newCycleFormSchema>
 
+interface Cycle {
+  id: string
+  task: string
+  minutesAmount: number
+}
+
 export default function Home() {
+  const [cycles, setCycles] = useState<Cycle[]>([])
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+
   const { register, handleSubmit, watch, formState, reset } = useForm<formData>(
     {
       resolver: zodResolver(newCycleFormSchema),
@@ -40,8 +51,27 @@ export default function Home() {
   const task = watch('task')
   const isSubmitDisabled = !task
 
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
+
+  const minutesAmount = Math.floor(currentSeconds / 60)
+  const secondsAmount = currentSeconds % 60
+
+  const minutes = minutesAmount.toString().padStart(2, '0')
+  const seconds = secondsAmount.toString().padStart(2, '0')
+
   function handleCreateNewCycle(data: formData) {
-    console.log(data)
+    const id = new Date().getTime().toString()
+
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      minutesAmount: data.minutesAmount,
+    }
+
+    setCycles((oldState) => [...oldState, newCycle])
+    setActiveCycleId(id)
     reset()
   }
 
@@ -79,11 +109,11 @@ export default function Home() {
         </HomeFormContainer>
 
         <HomeCountDownContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
           <HomeSeparator>:</HomeSeparator>
-          <span>0</span>
-          <span>0</span>
+          <span>{seconds[0]}</span>
+          <span>{seconds[1]}</span>
         </HomeCountDownContainer>
 
         <HomeStartCountDownButton type="submit" disabled={isSubmitDisabled}>
