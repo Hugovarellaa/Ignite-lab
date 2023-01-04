@@ -1,4 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Play } from 'phosphor-react'
+import { useForm } from 'react-hook-form'
+import * as zod from 'zod'
+
 import {
   HomeContainer,
   HomeCountDownContainer,
@@ -9,10 +13,38 @@ import {
   HomeTaskInput,
 } from './styles'
 
+const newCycleFormSchema = zod.object({
+  task: zod.string().min(3, 'Informe a tarefa'),
+  minutesAmount: zod
+    .number()
+    .min(1, 'O tempo mínimo para a tarefa e de 1 minuto')
+    .max(60, 'o tempo máximo para a tarefa e de 60 minutos'),
+})
+
+type formData = zod.infer<typeof newCycleFormSchema>
+
 export default function Home() {
+  const { register, handleSubmit, watch, formState } = useForm<formData>({
+    resolver: zodResolver(newCycleFormSchema),
+    defaultValues: {
+      task: '',
+      minutesAmount: 0,
+    },
+  })
+
+  const { errors } = formState
+  console.log(errors)
+
+  const task = watch('task')
+  const isSubmitDisabled = !task
+
+  function handleCreateNewCycle(data: formData) {
+    console.log(data)
+  }
+
   return (
     <HomeContainer>
-      <form>
+      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <HomeFormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
           <HomeTaskInput
@@ -20,6 +52,7 @@ export default function Home() {
             id="task"
             list="task-suggestion"
             placeholder="Dê um nome para o seu projeto"
+            {...register('task')}
           />
 
           <datalist id="task-suggestion">
@@ -35,9 +68,9 @@ export default function Home() {
             type="number"
             id="minutesAmount"
             placeholder="00"
-            step={5}
-            min={5}
+            min={1}
             max={60}
+            {...register('minutesAmount', { valueAsNumber: true })}
           />
           <span>minutos.</span>
         </HomeFormContainer>
@@ -50,7 +83,7 @@ export default function Home() {
           <span>0</span>
         </HomeCountDownContainer>
 
-        <HomeStartCountDownButton type="submit">
+        <HomeStartCountDownButton type="submit" disabled={isSubmitDisabled}>
           <Play size={24} />
           Começar
         </HomeStartCountDownButton>
