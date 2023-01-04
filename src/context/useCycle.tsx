@@ -9,15 +9,16 @@ export interface Cycle {
   finishDate?: Date
 }
 
-type formData = {
+interface formData {
   task: string
   minutesAmount: number
 }
 
 interface CycleContextData {
+  cycles: Cycle[]
+  activeCycle: Cycle | undefined
   activeCycleId: string | null
   amountSecondsPassed: number
-  activeCycle: Cycle | undefined
   marCurrentCycleAsFinished: () => void
   interruptCycle: () => void
   setSecondsPassed: (seconds: number) => void
@@ -83,6 +84,7 @@ export function CycleProvider({ children }: CycleProviderProps) {
   return (
     <CycleContext.Provider
       value={{
+        cycles,
         activeCycle,
         activeCycleId,
         interruptCycle,
