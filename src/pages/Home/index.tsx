@@ -12,7 +12,7 @@ import {
   HomeMinutesAmountInput,
   HomeSeparator,
   HomeStartCountDownButton,
-  HomeTaskInput
+  HomeTaskInput,
 } from './styles'
 
 const newCycleFormSchema = zod.object({
@@ -51,10 +51,8 @@ export default function Home() {
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
-
   const minutesAmount = Math.floor(currentSeconds / 60)
   const secondsAmount = currentSeconds % 60
-
   const minutes = minutesAmount.toString().padStart(2, '0')
   const seconds = secondsAmount.toString().padStart(2, '0')
 
@@ -94,7 +92,6 @@ export default function Home() {
       document.title = `${minutes}: ${seconds}`
     }
   }, [activeCycle, minutes, seconds])
-
   return (
     <HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewCycle)}>
