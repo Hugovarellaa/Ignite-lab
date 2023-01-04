@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { differenceInSeconds } from 'date-fns'
-import { Play } from 'phosphor-react'
+import { HandPalm, Play } from 'phosphor-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
@@ -12,6 +12,7 @@ import {
   HomeMinutesAmountInput,
   HomeSeparator,
   HomeStartCountDownButton,
+  HomeStoptCountDownButton,
   HomeTaskInput,
 } from './styles'
 
@@ -30,6 +31,7 @@ interface Cycle {
   task: string
   minutesAmount: number
   startDate: Date
+  interruptDate?: Date
 }
 
 export default function Home() {
@@ -72,6 +74,19 @@ export default function Home() {
     reset()
   }
 
+  function handleInterruptCycle() {
+    setCycles((oldSate) =>
+      oldSate.map((cycle) => {
+        if (cycle.id === activeCycleId) {
+          return { ...cycle, interruptDate: new Date() }
+        }
+
+        return cycle
+      }),
+    )
+    setActiveCycleId(null)
+  }
+
   useEffect(() => {
     let interval: number
 
@@ -101,6 +116,7 @@ export default function Home() {
             type="text"
             id="task"
             list="task-suggestion"
+            disabled={!!activeCycle}
             placeholder="Dê um nome para o seu projeto"
             {...register('task')}
           />
@@ -118,6 +134,7 @@ export default function Home() {
             type="number"
             id="minutesAmount"
             placeholder="00"
+            disabled={!!activeCycle}
             min={1}
             max={60}
             {...register('minutesAmount', { valueAsNumber: true })}
@@ -133,10 +150,20 @@ export default function Home() {
           <span>{seconds[1]}</span>
         </HomeCountDownContainer>
 
-        <HomeStartCountDownButton type="submit" disabled={isSubmitDisabled}>
-          <Play size={24} />
-          Começar
-        </HomeStartCountDownButton>
+        {activeCycle ? (
+          <HomeStoptCountDownButton
+            type="button"
+            onClick={handleInterruptCycle}
+          >
+            <HandPalm size={24} />
+            Interromper
+          </HomeStoptCountDownButton>
+        ) : (
+          <HomeStartCountDownButton type="submit" disabled={isSubmitDisabled}>
+            <Play size={24} />
+            Começar
+          </HomeStartCountDownButton>
+        )}
       </form>
     </HomeContainer>
   )

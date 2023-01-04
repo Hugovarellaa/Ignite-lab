@@ -85,7 +85,8 @@ export const HomeSeparator = styled.div`
 
   color: ${({ theme }) => theme['green-500']};
 `
-export const HomeStartCountDownButton = styled.button`
+
+const HomeButtonBase = styled.button`
   width: 100%;
   border: 0;
   padding: 1rem;
@@ -97,11 +98,20 @@ export const HomeStartCountDownButton = styled.button`
   gap: 0.5rem;
 
   font-weight: bold;
-
-  background-color: ${({ theme }) => theme['green-500']};
   color: ${({ theme }) => theme['gray-100']};
+`
+
+export const HomeStartCountDownButton = styled(HomeButtonBase)`
+  background-color: ${({ theme }) => theme['green-500']};
 
   &:not(:disabled):hover {
     background-color: ${({ theme }) => theme['green-700']};
+  }
+`
+export const HomeStoptCountDownButton = styled(HomeButtonBase)`
+  background-color: ${({ theme }) => theme['red-500']};
+
+  &:not(:disabled):hover {
+    background-color: ${({ theme }) => theme['red-700']};
   }
 `
