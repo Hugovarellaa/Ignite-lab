@@ -30,6 +30,7 @@ export function CountDown() {
 
         if (secondsDiff >= totalSeconds) {
           marCurrentCycleAsFinished()
+
           setSecondsPassed(totalSeconds)
           clearInterval(interval)
         } else {
